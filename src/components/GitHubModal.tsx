@@ -9,18 +9,19 @@ interface GitHubModalProps {
 export const GitHubModal: React.FC<GitHubModalProps> = ({ isOpen, onClose }) => {
   const [copied, setCopied] = useState(false);
   const [repoName, setRepoName] = useState('national-accounts-framework');
-  const [username, setUsername] = useState('votre-compte');
+  const [username, setUsername] = useState('GuillaumeAB');
 
   if (!isOpen) return null;
 
-  const terminalCommands = `# 1. Créez un nouveau dépôt sur https://github.com/new (nommé "${repoName}")
-# 2. Dans votre terminal ou dans ce répertoire, exécutez :
-git remote add origin https://github.com/${username}/${repoName}.git
-git branch -M main
-git push -u origin main
+  const repoUrl = `https://github.com/GuillaumeAB/national-accounts-framework`;
+  const terminalCommands = `# Votre dépôt est déjà synchronisé sur GitHub !
+# Pour récupérer les futures modifications en local :
+git pull origin main
 
-# Ou en 1 seule commande avec GitHub CLI :
-gh repo create ${repoName} --public --source=. --remote=origin --push`;
+# Pour ajouter de nouveaux commits :
+git add .
+git commit -m "update: nouvelles données ou visualisations"
+git push origin main`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(terminalCommands);
@@ -54,13 +55,23 @@ gh repo create ${repoName} --public --source=. --remote=origin --push`;
         </div>
 
         {/* Status banner */}
-        <div className="bg-emerald-950/40 border border-emerald-800/60 rounded-xl p-3.5 mb-5 flex items-start gap-2.5 text-xs text-emerald-200">
-          <ShieldCheck size={18} className="text-emerald-400 shrink-0 mt-0.5" />
-          <div>
-            <span className="font-semibold text-emerald-300">Dépôt Git initialisé :</span> Tous les fichiers
-            (données de comptabilité nationale France/Norvège/Suisse/USA/Allemagne, composants React, serveur Express, visualisations Recharts)
-            sont préparés et committés proprement sur la branche <code className="bg-emerald-900/60 px-1 py-0.5 rounded font-mono text-white">main</code>.
+        <div className="bg-emerald-950/50 border border-emerald-700/70 rounded-xl p-4 mb-5 flex items-start justify-between gap-3 text-xs text-emerald-200">
+          <div className="flex items-start gap-2.5">
+            <ShieldCheck size={20} className="text-emerald-400 shrink-0 mt-0.5" />
+            <div>
+              <span className="font-bold text-emerald-300 text-sm block mb-0.5">Dépôt GitHub synchronisé et en ligne !</span>
+              Le code source complet avec toutes les arborescences de comptabilité nationale (SEC 2010), visualisations et serveur est publié sur votre compte GitHub.
+            </div>
           </div>
+          <a
+            href={repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors text-xs"
+          >
+            <span>Voir sur GitHub</span>
+            <ExternalLink size={13} />
+          </a>
         </div>
 
         {/* Personalization Inputs */}
